@@ -19,28 +19,30 @@ extensions["Compressed"] = [".zip"]
 # Count number of files moved for each extension
 counter = {}
 
+def makedir(folder_path):
+    if not path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
+# Make Directories for each extension
+for key in extensions.keys():
+    makedir(directory + key)
+makedir(directory + "Other")
 
 # For all files in directory, check which extension it has and move to appropriate folder.
 for file in glob.glob(directory + "*"):
-    flag = False
+    moved_file = False
 
     for key in extensions.keys():
         if os.path.splitext(file)[1] in extensions[key]:
-            # create directory if it doesn't exist
-            if not path.exists(directory+str(key)):
-                os.makedirs(directory + key)
-
             shutil.move(file, directory+key)
             count = counter.get(key, 0) + 1  # update count 
             counter[key] = count
-            flag = True
+            moved_file = True
             break
 
-    if flag == True:
+    if moved_file == True:
         continue
-
-    if not path.exists(directory+"Other"):
-        os.makedirs(directory + "Other")
 
     count = counter.get("Other", 0) + 1  # update count 
     counter["Other"] = count
