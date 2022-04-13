@@ -3,14 +3,15 @@ from re import I
 from tkinter import W
 import os
 from os import path
+import shutil
 
 # Directory to Organize
 directory = "/home/nickel/Downloads/"
 
 # File Extensions
 extensions = {}
-extensions["Documents"] = [".pdf", ".docx", ".doc", ".csv"]
-extensions["Pictures"] = [".jpeg", ".jpg", ".png", ".gif"]
+extensions["Documents"] = [".pdf", ".docx", ".doc", ".csv", ".pptx"]
+extensions["Pictures"] = [".jpeg", ".jpg", ".png", ".gif", ".JPG", ".PNG", ".HEIC"]
 extensions["Videos"] = [".mp4", ".avi", ".webm", ".mkv"]
 extensions["Audio"] = [".mp3"]
 extensions["Compressed"] = [".zip"]
@@ -18,25 +19,34 @@ extensions["Compressed"] = [".zip"]
 # Count number of files moved for each extension
 counter = {}
 
-'''
-for file in DownloadsFolder:
-    for type, extension in extensions:
-        if file is in extension (list)
-            move to /home/nickel/type
-'''
+flag = False
 
 # For all files in directory, check which extension it has and move to appropriate folder.
 for file in glob.glob(directory + "*"):
     for key in extensions.keys():
         if os.path.splitext(file)[1] in extensions[key]:
+            # create directory if it doesn't exist
             if not path.exists(directory+str(key)):
                 os.makedirs(directory + key)
 
             count = counter.get(key, 0) + 1  # update count 
             counter[key] = count
-            print("-" + directory+str(key))
+            flag = True
+            break
+            # shutil.move(file, directory+key)
 
-print("Finished organizing", directory, "directory.\nSummary: ")
+    if flag == True:
+        continue
+
+    if not path.exists(directory+"Other"):
+        os.makedirs(directory + "Other")
+
+    count = counter.get("Other", 0) + 1  # update count 
+    counter["Other"] = count
+    # shutil.move(file, directory+"Other")
+
+
+print("\nFinished organizing", directory, "directory.\nSummary: ")
 total_count = 0
 for key, value in counter.items():
     total_count += value
