@@ -3,11 +3,10 @@ from tkinter import W
 import os
 from os import path
 
+# Directory to Organize
+directory = "/home/nickel/Downloads/"
 
-path = "/home/nickel/Downloads/*"
-downloads_folder = glob.glob(path)
-
-#Extensions
+#File Extensions
 extensions = {}
 extensions["documents"] = [".pdf", ".docx", ".doc", ".csv"]
 extensions["pictures"] = [".jpeg", ".jpg", ".png", ".gif"]
@@ -22,10 +21,10 @@ for file in DownloadsFolder:
             move to /home/nickel/type
 '''
 
-for file in downloads_folder:
-    # print(os.path.splitext(file)[1])
+# For all files in directory, check which extension it has and move to appropriate folder.
+for file in glob.glob(directory + "*"):
     for key in extensions.keys():
         if os.path.splitext(file)[1] in extensions[key]:
-            print(file) 
-            #move file to path/key
+            if path.exists(directory+str(key)):
+                print("-" + directory+str(key))
 
