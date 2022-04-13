@@ -16,7 +16,7 @@ extensions["Videos"] = [".mp4", ".avi", ".webm", ".mkv"]
 extensions["Audio"] = [".mp3"]
 extensions["Compressed"] = [".zip"]
 
-# Count number of files moved for each extension
+# Count number of files moved for each folder 
 counter = {}
 
 def makedir(folder_path):
