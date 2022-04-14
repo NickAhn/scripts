@@ -31,8 +31,11 @@ makedir(directory + "Other")
 
 # For all files in directory, check which extension it has and move to appropriate folder.
 for file in glob.glob(directory + "*"):
-    moved_file = False
+    #ignore directories
+    if file.find(".", 1) == -1: 
+        continue
 
+    moved_file = False
     for key in extensions.keys():
         if os.path.splitext(file)[1] in extensions[key]:
             shutil.move(file, directory+key)
