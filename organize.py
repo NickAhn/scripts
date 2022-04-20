@@ -4,6 +4,7 @@ from tkinter import W
 import os
 from os import path
 import shutil
+from venv import create
 
 # Directory to Organize
 directory = "/home/nickel/Downloads/"
@@ -23,6 +24,20 @@ def makedir(folder_path):
     if not path.exists(folder_path):
         os.makedirs(folder_path)
 
+# Try to move file. If Duplicate is found, ask user if the file being moved should be deleted.
+def move_file(file, path):
+    try:
+        shutil.move(file, path)
+        count = counter.get(key, 0) + 1  # update count 
+        counter[key] = count
+    except shutil.Error:
+        print("\n - Found duplicate of: ", file)
+        response = input("   Remove file? (Y/n) ")
+        if response.lower() == 'y':
+            os.remove(file)
+            print("   Removed ", file)
+        pass
+
 
 # Make Directories for each extension
 for key in extensions.keys():
@@ -38,9 +53,8 @@ for file in glob.glob(directory + "*"):
     moved_file = False
     for key in extensions.keys():
         if os.path.splitext(file)[1] in extensions[key]:
-            shutil.move(file, directory+key)
-            count = counter.get(key, 0) + 1  # update count 
-            counter[key] = count
+            # shutil.move(file, directory+key)
+            move_file(file, directory+key)
             moved_file = True
             break
 
